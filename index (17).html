@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <meta name="description" content="SimpleStock local-first inventory and sales app" />
+  <style>
+:root{--bg:#f4f6f8;--panel:#fff;--text:#111827;--muted:#6b7280;--border:#e5e7eb;--accent:#111827;--accentText:#fff;--danger:#b42318;--dangerBg:#fff3f2;--warn:#9a6700;--warnBg:#fffaeb;--info:#175cd3;--infoBg:#eff8ff;--success:#067647;--successBg:#ecfdf3;--radius:14px;--shadow:0 1px 2px rgba(16,24,40,.05)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app-shell{display:grid;grid-template-columns:245px minmax(0,1fr);min-height:100vh}.sidebar{background:#111827;color:#fff;padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}.brand-wrap{display:flex;gap:10px;align-items:center;padding:0 8px 20px}.brand-mark{width:38px;height:38px;border-radius:11px;background:#fff;color:#111827;display:grid;place-items:center;font-weight:800}.brand{font-weight:750;font-size:18px}.sidebar .muted{color:#9ca3af}.nav{display:flex;flex-direction:column;gap:5px}.nav-btn{border:0;background:transparent;color:#d1d5db;text-align:left;padding:11px 12px;border-radius:10px;font-size:14px;cursor:pointer}.nav-btn:hover,.nav-btn.active{background:#1f2937;color:#fff}.sidebar-note{margin-top:auto;border-top:1px solid #374151;padding:16px 7px 0;display:flex;gap:9px;align-items:flex-start}.status-dot{width:9px;height:9px;border-radius:99px;background:#32d583;margin-top:3px}.main{min-width:0;padding:24px 28px 50px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.topbar h1{font-size:24px;margin:0 0 4px}.top-actions{display:flex;gap:10px;align-items:center}.view{display:none}.view.active{display:block}.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}.stat-card,.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}.stat-card{padding:17px}.stat{font-size:28px;font-weight:750;margin:5px 0 2px}.panel{padding:18px}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid-2.unequal{grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr)}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}h2{font-size:17px;margin:0 0 4px}p{line-height:1.45}.small{font-size:13px}.tiny{font-size:11px}.muted{color:var(--muted)}.strong{font-weight:700}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.toolbar-left{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.input{width:100%;min-height:42px;border:1px solid #d0d5dd;border-radius:9px;background:#fff;color:var(--text);padding:9px 11px;font:inherit;font-size:14px;outline:none}.input:focus{border-color:#667085;box-shadow:0 0 0 3px rgba(17,24,39,.08)}.input.compact{width:auto;min-width:145px}.btn{min-height:42px;border-radius:9px;border:1px solid transparent;padding:9px 14px;font:inherit;font-weight:650;cursor:pointer}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.primary{background:var(--accent);color:var(--accentText)}.btn.secondary{background:#fff;border-color:#d0d5dd;color:#344054}.btn.danger{background:var(--danger);color:#fff}.btn.big{width:100%;font-size:15px}.icon-btn{border:0;background:transparent;font-size:22px;cursor:pointer;line-height:1}.badge{font-size:12px;font-weight:650;padding:5px 8px;border-radius:999px}.badge.success{background:var(--successBg);color:var(--success)}.badge.warn{background:var(--warnBg);color:var(--warn)}.badge.danger{background:var(--dangerBg);color:var(--danger)}.table-panel{padding:0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:12px 14px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle;white-space:nowrap}th{font-size:12px;color:var(--muted);font-weight:650;background:#fafafa;position:sticky;top:0}td.wrap{white-space:normal;min-width:180px}.table-actions{display:flex;gap:6px}.mini-btn{border:1px solid #d0d5dd;background:#fff;border-radius:7px;padding:6px 8px;font-size:12px;cursor:pointer}.mini-btn:hover{background:#f9fafb}.empty{padding:34px;text-align:center;color:var(--muted)}.hidden{display:none!important}.list{display:flex;flex-direction:column}.list-row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid var(--border)}.list-row:last-child{border-bottom:0}.list-main{min-width:0}.list-title{font-size:13px;font-weight:650}.list-sub{font-size:12px;color:var(--muted);margin-top:2px}.link-btn{background:none;border:0;padding:0;color:#344054;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;font-size:13px}.danger-text{color:var(--danger)}.form-stack{display:flex;flex-direction:column;gap:13px;margin-top:16px}.form-stack label,.modal-card label,.sticky-panel label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600}.form-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.short-table{max-height:520px}.pos-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr);gap:16px;align-items:start}.sticky-panel{position:sticky;top:18px}.product-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px;max-height:590px;overflow:auto}.product-choice{border:1px solid var(--border);border-radius:10px;background:#fff;padding:11px;text-align:left;cursor:pointer}.product-choice:hover{border-color:#98a2b3}.product-choice:disabled{opacity:.45;cursor:not-allowed}.product-choice strong{display:block;font-size:13px}.product-choice span{display:block;color:var(--muted);font-size:11px;margin-top:3px}.cart-list{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow:auto}.cart-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;border-bottom:1px solid var(--border);padding-bottom:8px}.cart-name{font-size:13px;font-weight:650}.cart-sub{font-size:11px;color:var(--muted);margin-top:2px}.qty-control{display:flex;align-items:center;gap:6px}.qty-control button{width:30px;height:30px;border:1px solid #d0d5dd;border-radius:7px;background:#fff;cursor:pointer}.qty-control input{width:48px;text-align:center;border:1px solid #d0d5dd;border-radius:7px;padding:6px;appearance:textfield;-moz-appearance:textfield}.qty-control input::-webkit-outer-spin-button,.qty-control input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.divider{height:1px;background:var(--border);margin:14px 0}.totals{margin:15px 0;display:flex;flex-direction:column;gap:8px;font-size:13px}.totals>div{display:flex;justify-content:space-between}.totals .grand{font-size:17px;padding-top:8px;border-top:1px dashed #d0d5dd}.report-controls{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.button-stack{display:flex;flex-direction:column;gap:9px;margin:15px 0}.file-label{text-align:center}.callout{border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:14px}.callout.warning{background:var(--warnBg);color:#7a2e0e;border:1px solid #fedf89}.callout.info{background:var(--infoBg);color:#1849a9;border:1px solid #b2ddff}.danger-zone{margin-top:16px;border-color:#fecdca}.settings-panel{max-width:680px}.message{position:fixed;right:24px;top:20px;z-index:50;max-width:420px;padding:11px 14px;border-radius:10px;background:#111827;color:#fff;box-shadow:0 8px 24px rgba(0,0,0,.18);font-size:13px}.message.error{background:#7a271a}.message.success{background:#05603a}.modal{border:0;padding:0;background:transparent;max-width:none}.modal::backdrop{background:rgba(17,24,39,.45)}.modal-card{width:min(620px,calc(100vw - 28px));max-height:calc(100vh - 36px);overflow:auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:13px}.modal-card.wide{width:min(820px,calc(100vw - 28px))}.small-modal{width:min(430px,calc(100vw - 28px))}.modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:5px}.receipt{border:1px solid var(--border);border-radius:10px;padding:15px}.receipt-head{text-align:center;margin-bottom:14px}.receipt-head h3{margin:0 0 5px}.receipt-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;font-size:12px;margin-bottom:12px}.receipt-table{width:100%;font-size:12px}.receipt-table th,.receipt-table td{padding:7px 4px;background:transparent}.receipt-total{margin-left:auto;width:min(280px,100%);font-size:13px}.receipt-total div{display:flex;justify-content:space-between;padding:4px 0}.receipt-total .grand{font-weight:750;font-size:16px;border-top:1px solid var(--border);margin-top:5px;padding-top:8px}.receipt-footer{text-align:center;margin-top:22px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--muted)}.sale-modal-head{justify-content:flex-end;margin-bottom:-4px}.return-list{display:flex;flex-direction:column;gap:8px}.return-row{display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:10px;align-items:center;border-bottom:1px solid var(--border);padding:8px 0}.mobile-only{display:none}
+@media(max-width:960px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-2,.grid-2.unequal,.pos-grid{grid-template-columns:1fr}.sticky-panel{position:static}.product-picker{grid-template-columns:repeat(3,minmax(0,1fr))}.app-shell{grid-template-columns:1fr}.sidebar{position:fixed;left:-270px;z-index:40;width:245px;transition:left .18s}.sidebar.open{left:0}.mobile-only{display:inline-block}.main{padding:18px}.topbar{align-items:flex-start}}
+@media(max-width:650px){.stats-grid{grid-template-columns:1fr 1fr;gap:9px}.stat-card{padding:13px}.stat{font-size:23px}.top-actions .badge{display:none}.toolbar,.report-controls{align-items:stretch;flex-direction:column}.toolbar-left{width:100%}.toolbar-left .input,.input.compact{width:100%}.product-picker{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}.main{padding:14px}.panel{padding:14px}.topbar h1{font-size:21px}.message{left:14px;right:14px;top:12px}.receipt-meta{grid-template-columns:1fr}.modal-actions{flex-wrap:wrap}.modal-actions .btn{flex:1}}
+@page{margin:0}@media print{html,body{margin:0!important;padding:0!important;background:#fff!important}body *{visibility:hidden!important}#saleDialog[open],#saleDialog[open] *{visibility:visible!important}#saleDialog{position:absolute;inset:0;background:#fff;margin:0!important;padding:0!important}#saleDialog::backdrop{display:none}.modal-card{box-shadow:none;width:100%;max-height:none;margin:0!important;padding:12mm!important;border-radius:0!important}.sale-modal-head,.modal-actions{display:none!important}.receipt{border:0;padding:0}}
+
+  
+.date-field{position:relative;display:inline-block;min-width:145px}.date-field .date-input{width:100%}.date-field .date-placeholder{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#667085;font-size:14px;background:#fff;padding-right:4px}.date-field.has-value .date-placeholder{display:none}@supports selector(input::-webkit-datetime-edit){.date-field:not(.has-value) .date-input::-webkit-datetime-edit{color:transparent}.date-field:not(.has-value) .date-input:focus::-webkit-datetime-edit{color:transparent}}
+</style>
+  <title>SimpleStock</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-wrap">
+        <div class="brand-mark" aria-label="SimpleStock logo">
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <path d="M4 7.2 12 3l8 4.2-8 4.2L4 7.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M4 7.2v9.6L12 21l8-4.2V7.2M12 11.4V21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="m8.2 5 8 4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand">SimpleStock</div>
+          <div class="muted tiny">Local-first inventory</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+        <button class="nav-btn" data-view="products">Products</button>
+        <button class="nav-btn" data-view="stock">Stock</button>
+        <button class="nav-btn" data-view="sell">Sell</button>
+        <button class="nav-btn" data-view="sales">Sales</button>
+        <button class="nav-btn" data-view="reports">Reports</button>
+        <button class="nav-btn" data-view="data">Backup & Data</button>
+        <button class="nav-btn" data-view="settings">Settings</button>
+      </nav>
+      <div class="sidebar-note">
+        <div class="status-dot"></div>
+        <div>
+          <div class="tiny strong">Saved on this device</div>
+          <div class="tiny muted">Export backups regularly.</div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <button class="icon-btn mobile-only" id="menuBtn" aria-label="Open menu">☰</button>
+          <h1 id="pageTitle">Dashboard</h1>
+          <div id="businessSubtitle" class="muted small">Your business overview</div>
+        </div>
+        <div class="top-actions">
+          <span id="offlineBadge" class="badge success">Offline ready</span>
+          <button class="btn secondary" id="quickBackupBtn">Export backup</button>
+        </div>
+      </header>
+
+      <div id="messageBar" class="message hidden" role="status" aria-live="polite"></div>
+
+      <section class="view active" id="view-dashboard">
+        <div id="backupWarning" class="callout warning hidden"></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="muted small">Products</div><div class="stat" id="statProducts">0</div><div class="tiny muted">Active products</div></article>
+          <article class="stat-card"><div class="muted small">Units in stock</div><div class="stat" id="statUnits">0</div><div class="tiny muted">Across all products</div></article>
+          <article class="stat-card"><div class="muted small">Low stock</div><div class="stat" id="statLow">0</div><div class="tiny muted">Need attention</div></article>
+          <article class="stat-card"><div class="muted small">Today's sales</div><div class="stat" id="statTodaySales">৳0</div><div class="tiny muted" id="statTodayOrders">0 orders</div></article>
+        </div>
+
+        <div class="grid-2">
+          <article class="panel">
+            <div class="panel-head"><div><h2>Low stock</h2><p class="muted small">Products at or below their alert level.</p></div><button class="link-btn" data-go="products" data-filter="low">View all</button></div>
+            <div id="dashboardLowStock" class="list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h2>Recent activity</h2><p class="muted small">Latest inventory changes and sales.</p></div></div>
+            <div id="dashboardActivity" class="list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-products">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input id="productSearch" class="input" type="search" placeholder="Search name, SKU, barcode…" />
+            <select id="productFilter" class="input compact"><option value="all">All products</option><option value="low">Low stock</option><option value="out">Out of stock</option><option value="available">Available</option><option value="archived">Archived</option></select>
+            <select id="categoryFilter" class="input compact"><option value="all">All categories</option></select>
+          </div>
+          <button class="btn primary" id="addProductBtn">+ Add product</button>
+        </div>
+        <div class="panel table-panel">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Product</th><th>Category</th><th>SKU / Barcode</th><th>Cost</th><th>Price</th><th>Stock</th><th></th></tr></thead>
+              <tbody id="productsTableBody"></tbody>
+            </table>
+          </div>
+          <div id="productsEmpty" class="empty hidden">No products found.</div>
+        </div>
+      </section>
+
+      <section class="view" id="view-stock">
+        <div class="grid-2 unequal">
+          <article class="panel">
+            <h2>Stock movement</h2>
+            <p class="muted small">Receive stock, remove damaged/lost stock, or make an adjustment.</p>
+            <form id="stockForm" class="form-stack">
+              <label>Product<select id="stockProduct" class="input" required></select></label>
+              <div class="form-row">
+                <label>Type<select id="stockType" class="input"><option value="IN">Stock in</option><option value="OUT">Stock out</option><option value="ADJUST">Set quantity</option></select></label>
+                <label>Quantity<input id="stockQty" class="input" type="number" min="0" step="1" required value="1" /></label>
+              </div>
+              <label>Reason<input id="stockReason" class="input" maxlength="120" placeholder="Supplier delivery, damaged, correction…" /></label>
+              <button class="btn primary" type="submit">Save stock movement</button>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="panel-head"><div><h2>Inventory history</h2><p class="muted small">Every stock change is recorded.</p></div></div>
+            <div class="table-wrap short-table"><table><thead><tr><th>Time</th><th>Product</th><th>Change</th><th>Reason</th></tr></thead><tbody id="stockHistoryBody"></tbody></table></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-sell">
+        <div class="pos-grid">
+          <article class="panel">
+            <div class="panel-head"><div><h2>Add to cart</h2><p class="muted small">Search products or enter SKU/barcode.</p></div></div>
+            <input id="posSearch" class="input" type="search" placeholder="Search product / SKU / barcode" autocomplete="off" />
+            <div id="posProductList" class="product-picker"></div>
+          </article>
+          <article class="panel sticky-panel">
+            <div class="panel-head"><div><h2>Current sale</h2><p class="muted small" id="cartCount">0 items</p></div><button id="clearCartBtn" class="link-btn danger-text">Clear</button></div>
+            <div id="cartItems" class="cart-list"></div>
+            <div class="divider"></div>
+            <div class="form-row">
+              <label>Customer (optional)<input id="saleCustomer" class="input" maxlength="80" placeholder="Name or phone" /></label>
+              <label>Payment<select id="salePayment" class="input"><option>Cash</option><option>Bkash</option><option>Nagad</option><option>Rocket</option><option>Card</option><option>Bank</option><option>Other</option></select></label>
+            </div>
+            <label>Discount<input id="saleDiscount" class="input" type="number" min="0" step="0.01" value="0" /></label>
+            <div class="totals">
+              <div><span>Subtotal</span><strong id="saleSubtotal">৳0</strong></div>
+              <div><span>Discount</span><strong id="saleDiscountText">৳0</strong></div>
+              <div class="grand"><span>Total</span><strong id="saleTotal">৳0</strong></div>
+            </div>
+            <button id="checkoutBtn" class="btn primary big" disabled>Complete sale</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-sales">
+        <div class="toolbar">
+          <div class="toolbar-left">
+            <input id="salesSearch" class="input" type="search" placeholder="Search receipt or customer…" />
+            <span class="date-field"><input id="salesFrom" class="input compact date-input" type="date" aria-label="Sales from date" /><span class="date-placeholder">DD-MM-YYYY</span></span>
+            <span class="date-field"><input id="salesTo" class="input compact date-input" type="date" aria-label="Sales to date" /><span class="date-placeholder">DD-MM-YYYY</span></span>
+          </div>
+          <button class="btn secondary" id="clearSalesFilters">Clear filters</button>
+        </div>
+        <div class="panel table-panel">
+          <div class="table-wrap"><table><thead><tr><th>Receipt</th><th>Date</th><th>Customer</th><th>Payment</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody id="salesTableBody"></tbody></table></div>
+          <div id="salesEmpty" class="empty hidden">No sales found.</div>
+        </div>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="report-controls panel">
+          <div><h2>Business report</h2><p class="muted small">Sales and inventory summary from the data stored on this device.</p></div>
+          <div class="toolbar-left"><span class="date-field"><input id="reportFrom" class="input compact date-input" type="date" aria-label="Report from date" /><span class="date-placeholder">DD-MM-YYYY</span></span><span class="date-field"><input id="reportTo" class="input compact date-input" type="date" aria-label="Report to date" /><span class="date-placeholder">DD-MM-YYYY</span></span><button class="btn secondary" id="reportApply">Apply</button></div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="muted small">Revenue</div><div class="stat" id="reportRevenue">৳0</div></article>
+          <article class="stat-card"><div class="muted small">Orders</div><div class="stat" id="reportOrders">0</div></article>
+          <article class="stat-card"><div class="muted small">Estimated gross profit</div><div class="stat" id="reportProfit">৳0</div></article>
+          <article class="stat-card"><div class="muted small">Inventory value (cost)</div><div class="stat" id="reportInventoryValue">৳0</div></article>
+        </div>
+        <div class="grid-2">
+          <article class="panel"><h2>Top selling products</h2><div id="topProducts" class="list"></div></article>
+          <article class="panel"><h2>Payment breakdown</h2><div id="paymentBreakdown" class="list"></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-data">
+        <div class="grid-2">
+          <article class="panel">
+            <h2>Full backup</h2>
+            <p class="muted small">Downloads one JSON file containing products, stock history, sales, returns and settings. Keep copies on another device, USB drive or cloud storage.</p>
+            <div class="button-stack">
+              <button id="exportBackupBtn" class="btn primary">Export full backup</button>
+              <label class="btn secondary file-label">Restore from backup<input id="importBackupInput" type="file" accept="application/json,.json" hidden /></label>
+            </div>
+            <div class="callout info"><strong>Important:</strong> local browser data can be lost if the device fails or browser storage is cleared. Your exported backup file is your recovery copy.</div>
+          </article>
+          <article class="panel">
+            <h2>Excel-compatible exports</h2>
+            <p class="muted small">CSV files open directly in Excel, Google Sheets and LibreOffice.</p>
+            <div class="button-stack">
+              <button id="exportProductsCsv" class="btn secondary">Export products CSV</button>
+              <button id="exportSalesCsv" class="btn secondary">Export sales CSV</button>
+              <button id="exportMovementsCsv" class="btn secondary">Export stock history CSV</button>
+            </div>
+          </article>
+        </div>
+        <article class="panel danger-zone">
+          <h2>Reset app</h2><p class="muted small">Deletes all business data stored by SimpleStock on this browser. Export a backup first.</p>
+          <button id="resetDataBtn" class="btn danger">Delete all local data</button>
+        </article>
+      </section>
+
+      <section class="view" id="view-settings">
+        <article class="panel settings-panel">
+          <h2>Business settings</h2>
+          <form id="settingsForm" class="form-stack">
+            <label>Business name<input id="settingBusinessName" class="input" maxlength="80" placeholder="My Shop" /></label>
+            <label>Address<textarea id="settingAddress" class="input" rows="2" maxlength="180" placeholder="Shop address"></textarea></label>
+            <div class="form-row">
+              <label>Phone<input id="settingPhone" class="input" maxlength="30" placeholder="01XXXXXXXXX" /></label>
+              <label>Currency symbol<input id="settingCurrency" class="input" maxlength="4" value="৳" /></label>
+            </div>
+            <label>Backup reminder<select id="settingBackupDays" class="input"><option value="1">Every day</option><option value="3">Every 3 days</option><option value="7">Every 7 days</option><option value="14">Every 14 days</option><option value="30">Every 30 days</option></select></label>
+            <button class="btn primary" type="submit">Save settings</button>
+          </form>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="productDialog" class="modal">
+    <form method="dialog" id="productForm" class="modal-card">
+      <div class="modal-head"><div><h2 id="productDialogTitle">Add product</h2><p class="muted small">Product information and stock alert level.</p></div><button type="button" class="icon-btn" id="closeProductDialog" aria-label="Close">×</button></div>
+      <input id="productId" type="hidden" />
+      <label>Product name<input id="productName" class="input" required maxlength="80" /></label>
+      <div class="form-row"><label>Category<input id="productCategory" class="input" maxlength="50" placeholder="e.g. Drinks" /></label><label>SKU / Barcode<input id="productSku" class="input" maxlength="40" /></label></div>
+      <input id="productBarcode" type="hidden" />
+      <div class="form-row"><label>Cost price<input id="productCost" class="input" type="number" min="0" step="0.01" value="0" required /></label><label>Selling price<input id="productPrice" class="input" type="number" min="0" step="0.01" value="0" required /></label></div>
+      <div class="form-row"><label>Opening stock<input id="productOpeningStock" class="input" type="number" min="0" step="1" value="0" /></label><label>Low-stock alert<input id="productLow" class="input" type="number" min="0" step="1" value="5" required /></label></div>
+      <label>Notes<textarea id="productNotes" class="input" rows="2" maxlength="250"></textarea></label>
+      <div class="modal-actions"><button class="btn secondary" value="cancel">Cancel</button><button class="btn primary" id="saveProductBtn" value="default">Save product</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="saleDialog" class="modal">
+    <div class="modal-card wide">
+      <div class="modal-head sale-modal-head"><button class="icon-btn" id="closeSaleDialog" aria-label="Close">×</button></div>
+      <div id="saleDetailContent"></div>
+      <div class="modal-actions"><button class="btn secondary" id="printReceiptBtn">Print receipt</button><button class="btn secondary" id="returnItemsBtn">Return items</button><button class="btn primary" id="doneSaleDialog">Done</button></div>
+    </div>
+  </dialog>
+
+  <dialog id="returnDialog" class="modal">
+    <form method="dialog" id="returnForm" class="modal-card">
+      <div class="modal-head"><div><h2>Return items</h2><p class="muted small">Returned quantity is added back to stock.</p></div><button type="button" class="icon-btn" id="closeReturnDialog" aria-label="Close">×</button></div>
+      <div id="returnItemsList" class="return-list"></div>
+      <label>Reason<input id="returnReason" class="input" maxlength="120" placeholder="Customer return, damaged on delivery…" /></label>
+      <div class="modal-actions"><button type="button" class="btn secondary" id="cancelReturnDialog">Cancel</button><button class="btn primary" value="default">Process return</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="confirmDialog" class="modal">
+    <form method="dialog" class="modal-card small-modal">
+      <h2 id="confirmTitle">Are you sure?</h2>
+      <p id="confirmText" class="muted"></p>
+      <div class="modal-actions"><button class="btn secondary" value="cancel">Cancel</button><button class="btn danger" id="confirmActionBtn" value="confirm">Confirm</button></div>
+    </form>
+  </dialog>
+
+  <script>
+(() => {
+  'use strict';
+  const DB_NAME = 'simplestock_local_full';
+  const DB_VERSION = 1;
+  const STORES = ['products','sales','movements','settings'];
+
+  const uid = () => (globalThis.crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
+  const now = () => new Date().toISOString();
+
+  function requestPromise(request){
+    return new Promise((resolve,reject) => {
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error || new Error('Database request failed'));
+    });
+  }
+  function transactionPromise(tx){
+    return new Promise((resolve,reject) => {
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error || new Error('Database transaction failed'));
+      tx.onabort = () => reject(tx.error || new Error('Database transaction aborted'));
+    });
+  }
+
+  let dbPromise;
+  function open(){
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve,reject) => {
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains('products')) {
+          const s = db.createObjectStore('products', {keyPath:'id'});
+          s.createIndex('name','name',{unique:false});
+          s.createIndex('category','category',{unique:false});
+        }
+        if (!db.objectStoreNames.contains('sales')) {
+          const s = db.createObjectStore('sales', {keyPath:'id'});
+          s.createIndex('createdAt','createdAt',{unique:false});
+          s.createIndex('receipt','receipt',{unique:true});
+        }
+        if (!db.objectStoreNames.contains('movements')) {
+          const s = db.createObjectStore('movements', {keyPath:'id'});
+          s.createIndex('createdAt','createdAt',{unique:false});
+          s.createIndex('productId','productId',{unique:false});
+        }
+        if (!db.objectStoreNames.contains('settings')) db.createObjectStore('settings', {keyPath:'key'});
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error || new Error('Could not open local database'));
+    });
+    return dbPromise;
+  }
+
+  async function getAll(storeName){
+    const db = await open();
+    return requestPromise(db.transaction(storeName,'readonly').objectStore(storeName).getAll());
+  }
+  async function get(storeName,id){
+    const db = await open();
+    return requestPromise(db.transaction(storeName,'readonly').objectStore(storeName).get(id));
+  }
+  async function put(storeName,value){
+    const db = await open();
+    const tx = db.transaction(storeName,'readwrite');
+    tx.objectStore(storeName).put(value);
+    await transactionPromise(tx);
+    return value;
+  }
+
+  function cleanText(value,max=200){ return String(value ?? '').trim().slice(0,max); }
+  function num(value,min=0,max=1e12){ const n=Number(value); return Number.isFinite(n)?Math.max(min,Math.min(max,n)):min; }
+  function int(value,min=0,max=1e9){ return Math.floor(num(value,min,max)); }
+
+  async function ensureDefaults(){
+    const existing = await get('settings','main');
+    if (existing) return existing;
+    const defaults = {key:'main',businessName:'My Business',address:'',phone:'',currency:'৳',backupDays:7,lastBackupAt:null,createdAt:now(),updatedAt:now()};
+    await put('settings',defaults);
+    return defaults;
+  }
+
+  async function saveSettings(patch){
+    const current = await ensureDefaults();
+    const next = {
+      ...current,
+      businessName: cleanText(patch.businessName || current.businessName,80) || 'My Business',
+      address: cleanText(patch.address,180),
+      phone: cleanText(patch.phone,30),
+      currency: cleanText(patch.currency || '৳',4) || '৳',
+      backupDays: int(patch.backupDays || 7,1,365),
+      lastBackupAt: patch.lastBackupAt === undefined ? current.lastBackupAt : patch.lastBackupAt,
+      updatedAt: now()
+    };
+    return put('settings',next);
+  }
+
+  async function addProduct(input){
+    const db = await open();
+    const tx = db.transaction(['products','movements'],'readwrite');
+    const products = tx.objectStore('products');
+    const movements = tx.objectStore('movements');
+    const id = uid();
+    const opening = int(input.openingStock,0);
+    const product = {
+      id,
+      name:cleanText(input.name,80), category:cleanText(input.category,50)||'Uncategorized', sku:cleanText(input.sku,40), barcode:cleanText(input.barcode,60),
+      cost:num(input.cost), price:num(input.price), qty:opening, lowStock:int(input.lowStock,0), notes:cleanText(input.notes,250), active:true,
+      createdAt:now(), updatedAt:now()
+    };
+    if (!product.name) throw new Error('Product name is required.');
+    products.add(product);
+    if (opening > 0) movements.add({id:uid(),productId:id,productName:product.name,type:'OPENING',delta:opening,beforeQty:0,afterQty:opening,reason:'Opening stock',refId:null,createdAt:now()});
+    await transactionPromise(tx);
+    return product;
+  }
+
+  async function updateProduct(id,input){
+    const db = await open();
+    const tx = db.transaction('products','readwrite');
+    const store = tx.objectStore('products');
+    const current = await requestPromise(store.get(id));
+    if (!current) { tx.abort(); throw new Error('Product not found.'); }
+    const next = {...current,
+      name:cleanText(input.name,80), category:cleanText(input.category,50)||'Uncategorized', sku:cleanText(input.sku,40), barcode:cleanText(input.barcode,60),
+      cost:num(input.cost), price:num(input.price), lowStock:int(input.lowStock,0), notes:cleanText(input.notes,250), updatedAt:now()
+    };
+    if (!next.name) { tx.abort(); throw new Error('Product name is required.'); }
+    store.put(next);
+    await transactionPromise(tx);
+    return next;
+  }
+
+  async function archiveProduct(id){
+    const db = await open();
+    const tx = db.transaction('products','readwrite');
+    const store = tx.objectStore('products');
+    const p = await requestPromise(store.get(id));
+    if (!p) { tx.abort(); throw new Error('Product not found.'); }
+    p.active = false; p.updatedAt = now(); store.put(p);
+    await transactionPromise(tx);
+  }
+
+  async function unarchiveProduct(id){
+    const db = await open();
+    const tx = db.transaction('products','readwrite');
+    const store = tx.objectStore('products');
+    const p = await requestPromise(store.get(id));
+    if (!p) { tx.abort(); throw new Error('Product not found.'); }
+    p.active = true; p.updatedAt = now(); store.put(p);
+    await transactionPromise(tx);
+  }
+
+  async function stockMovement(productId,type,quantity,reason){
+    const allowed = new Set(['IN','OUT','ADJUST']);
+    if (!allowed.has(type)) throw new Error('Invalid stock movement type.');
+    const q = int(quantity,0);
+    if (type !== 'ADJUST' && q < 1) throw new Error('Quantity must be at least 1.');
+    const db = await open();
+    const tx = db.transaction(['products','movements'],'readwrite');
+    const ps = tx.objectStore('products');
+    const ms = tx.objectStore('movements');
+    const p = await requestPromise(ps.get(productId));
+    if (!p || !p.active) { tx.abort(); throw new Error('Product not found.'); }
+    const before = int(p.qty);
+    let after = before;
+    if (type === 'IN') after = before + q;
+    if (type === 'OUT') { if (q > before) { tx.abort(); throw new Error(`Only ${before} units are available.`); } after = before - q; }
+    if (type === 'ADJUST') after = q;
+    const delta = after - before;
+    p.qty = after; p.updatedAt = now(); ps.put(p);
+    ms.add({id:uid(),productId:p.id,productName:p.name,type,delta,beforeQty:before,afterQty:after,reason:cleanText(reason,120)||({IN:'Stock received',OUT:'Stock removed',ADJUST:'Stock adjustment'}[type]),refId:null,createdAt:now()});
+    await transactionPromise(tx);
+    return p;
+  }
+
+  function makeReceipt(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const stamp = `${pad(d.getDate())}${pad(d.getMonth()+1)}${d.getFullYear()}-${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+    return `${stamp}-${Math.random().toString(36).slice(2,5).toUpperCase()}`;
+  }
+
+  async function createSale(input){
+    const rawItems = Array.isArray(input.items) ? input.items : [];
+    const merged = new Map();
+    for (const row of rawItems) {
+      const id = cleanText(row.productId,100); const q = int(row.qty,1);
+      if (!id || q < 1) continue;
+      merged.set(id,(merged.get(id)||0)+q);
+    }
+    if (!merged.size) throw new Error('Cart is empty.');
+
+    const db = await open();
+    const tx = db.transaction(['products','sales','movements'],'readwrite');
+    const ps = tx.objectStore('products'), ss = tx.objectStore('sales'), ms = tx.objectStore('movements');
+    const ids = [...merged.keys()];
+    const productRows = await Promise.all(ids.map(id => requestPromise(ps.get(id))));
+    const items = [];
+    for (let i=0;i<ids.length;i++) {
+      const p = productRows[i], qty = merged.get(ids[i]);
+      if (!p || !p.active) { tx.abort(); throw new Error('A product in the cart no longer exists.'); }
+      if (qty > p.qty) { tx.abort(); throw new Error(`${p.name}: only ${p.qty} in stock.`); }
+      items.push({productId:p.id,name:p.name,sku:p.sku,price:num(p.price),cost:num(p.cost),qty,returnedQty:0});
+    }
+    const subtotal = items.reduce((s,i)=>s+i.price*i.qty,0);
+    const discount = Math.min(num(input.discount),subtotal);
+    const total = Math.max(0,subtotal-discount);
+    const saleId = uid(), createdAt = now();
+    const sale = {id:saleId,receipt:makeReceipt(),customer:cleanText(input.customer,80),payment:cleanText(input.payment,30)||'Cash',items,subtotal,discount,total,returnedAmount:0,refunds:[],status:'COMPLETED',createdAt,updatedAt:createdAt};
+    for (let i=0;i<items.length;i++) {
+      const item = items[i], p = productRows[ids.indexOf(item.productId)];
+      const before = p.qty; p.qty -= item.qty; p.updatedAt=createdAt; ps.put(p);
+      ms.add({id:uid(),productId:p.id,productName:p.name,type:'SALE',delta:-item.qty,beforeQty:before,afterQty:p.qty,reason:`Sale ${sale.receipt}`,refId:saleId,createdAt});
+    }
+    ss.add(sale);
+    await transactionPromise(tx);
+    return sale;
+  }
+
+  async function returnSaleItems(saleId,returnMap,reason){
+    const requested = new Map();
+    for (const [productId,value] of Object.entries(returnMap || {})) {
+      const qty=int(value,0); if(qty>0) requested.set(productId,qty);
+    }
+    if (!requested.size) throw new Error('Choose at least one item to return.');
+    const db = await open();
+    const tx = db.transaction(['products','sales','movements'],'readwrite');
+    const ps=tx.objectStore('products'), ss=tx.objectStore('sales'), ms=tx.objectStore('movements');
+    const sale = await requestPromise(ss.get(saleId));
+    if (!sale) { tx.abort(); throw new Error('Sale not found.'); }
+    let grossReturn = 0;
+    for (const item of sale.items) {
+      const qty=requested.get(item.productId)||0;
+      if (!qty) continue;
+      const remaining=item.qty-(item.returnedQty||0);
+      if (qty>remaining) { tx.abort(); throw new Error(`${item.name}: maximum return is ${remaining}.`); }
+      const p=await requestPromise(ps.get(item.productId));
+      if (!p) { tx.abort(); throw new Error(`${item.name} no longer exists in inventory.`); }
+      const before=p.qty; p.qty+=qty; p.updatedAt=now(); ps.put(p);
+      item.returnedQty=(item.returnedQty||0)+qty;
+      grossReturn += item.price*qty;
+      ms.add({id:uid(),productId:p.id,productName:p.name,type:'RETURN',delta:qty,beforeQty:before,afterQty:p.qty,reason:cleanText(reason,120)||`Return from ${sale.receipt}`,refId:sale.id,createdAt:now()});
+    }
+    const discountRate = sale.subtotal > 0 ? sale.discount / sale.subtotal : 0;
+    const refundAmount = Math.max(0,grossReturn*(1-discountRate));
+    sale.returnedAmount = num((sale.returnedAmount||0)+refundAmount);
+    sale.refunds = Array.isArray(sale.refunds)?sale.refunds:[];
+    sale.refunds.push({id:uid(),amount:refundAmount,reason:cleanText(reason,120),createdAt:now(),items:Object.fromEntries(requested)});
+    const remainingUnits=sale.items.reduce((s,i)=>s+(i.qty-(i.returnedQty||0)),0);
+    sale.status=remainingUnits===0?'RETURNED':'PARTIAL_RETURN'; sale.updatedAt=now(); ss.put(sale);
+    await transactionPromise(tx);
+    return sale;
+  }
+
+  async function exportAll(){
+    const [products,sales,movements,settings] = await Promise.all(STORES.map(getAll));
+    return {app:'SimpleStock',formatVersion:1,exportedAt:now(),products,sales,movements,settings};
+  }
+
+  function validateBackup(data){
+    if (!data || data.app!=='SimpleStock' || data.formatVersion!==1) throw new Error('This is not a valid SimpleStock backup file.');
+    for (const key of STORES) if (!Array.isArray(data[key])) throw new Error(`Backup is missing ${key}.`);
+  }
+
+  async function restoreAll(data){
+    validateBackup(data);
+    const db=await open();
+    const tx=db.transaction(STORES,'readwrite');
+    for (const name of STORES) {
+      const store=tx.objectStore(name); store.clear();
+      for (const row of data[name]) store.put(row);
+    }
+    await transactionPromise(tx);
+    await ensureDefaults();
+  }
+
+  async function resetAll(){
+    const db=await open();
+    const tx=db.transaction(STORES,'readwrite');
+    STORES.forEach(name=>tx.objectStore(name).clear());
+    await transactionPromise(tx);
+    await ensureDefaults();
+  }
+
+  globalThis.SimpleStockDB = {open,getAll,get,put,ensureDefaults,saveSettings,addProduct,updateProduct,archiveProduct,unarchiveProduct,stockMovement,createSale,returnSaleItems,exportAll,restoreAll,resetAll};
+})();
+
+  </script>
+  <script>
+(() => {
+  'use strict';
+  const DB = globalThis.SimpleStockDB;
+  const state = {products:[],sales:[],movements:[],settings:null,cart:new Map(),selectedSale:null,currentView:'dashboard'};
+  const $ = (s,root=document) => root.querySelector(s);
+  const $$ = (s,root=document) => [...root.querySelectorAll(s)];
+  const esc = value => String(value ?? '').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const n = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+  const int = value => Math.max(0,Math.floor(n(value)));
+  const dateInputValue = d => { const x=new Date(d); const y=x.getFullYear(),m=String(x.getMonth()+1).padStart(2,'0'),day=String(x.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; };
+  const startOfDay = value => { if(!value)return null; const d=new Date(`${value}T00:00:00`); return Number.isNaN(d.getTime())?null:d; };
+  const endOfDay = value => { if(!value)return null; const d=new Date(`${value}T23:59:59.999`); return Number.isNaN(d.getTime())?null:d; };
+  const fmtDate = iso => new Date(iso).toLocaleString([], {year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  const currency = () => state.settings?.currency || '৳';
+  const money = value => `${currency()}${n(value).toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:2})}`;
+  function updateDatePlaceholders(){ $$('.date-field').forEach(w=>{const i=w.querySelector('input[type="date"]');w.classList.toggle('has-value',!!i?.value);}); }
+  function enableDatePickers(){ $$('.date-field input[type="date"]').forEach(i=>{i.addEventListener('click',()=>{if(typeof i.showPicker==='function'){try{i.showPicker();}catch(_){}}});}); }
+
+  let messageTimer;
+  function notify(text,type='success'){
+    const bar=$('#messageBar'); clearTimeout(messageTimer); bar.textContent=text; bar.className=`message ${type}`;
+    messageTimer=setTimeout(()=>bar.classList.add('hidden'),3200);
+  }
+
+  function activeProducts(){ return state.products.filter(p=>p.active!==false); }
+  function productById(id){ return state.products.find(p=>p.id===id); }
+  function netSaleTotal(sale){ return Math.max(0,n(sale.total)-n(sale.returnedAmount)); }
+
+  async function refresh(){
+    const [products,sales,movements,settings] = await Promise.all([DB.getAll('products'),DB.getAll('sales'),DB.getAll('movements'),DB.ensureDefaults()]);
+    state.products=products.sort((a,b)=>a.name.localeCompare(b.name));
+    state.sales=sales.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+    state.movements=movements.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+    state.settings=settings;
+    $('#businessSubtitle').textContent=`${settings.businessName} · data saved on this device`;
+    renderAll();
+  }
+
+  function renderAll(){
+    renderDashboard(); renderProducts(); renderStock(); renderPos(); renderCart(); renderSales(); renderReports(); renderSettings(); renderBackupWarning();
+  }
+
+  function go(view){
+    state.currentView=view;
+    $$('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));
+    $$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+    const titles={dashboard:'Dashboard',products:'Products',stock:'Stock',sell:'Sell',sales:'Sales',reports:'Reports',data:'Backup & Data',settings:'Settings'};
+    $('#pageTitle').textContent=titles[view]||'SimpleStock';
+    $('#sidebar').classList.remove('open');
+    if(view==='reports') renderReports();
+  }
+
+  function renderBackupWarning(){
+    const box=$('#backupWarning');
+    const days=Math.max(1,int(state.settings?.backupDays||7));
+    const last=state.settings?.lastBackupAt ? new Date(state.settings.lastBackupAt) : null;
+    const overdue=!last || (Date.now()-last.getTime()) >= days*86400000;
+    if(!overdue){box.classList.add('hidden');return;}
+    const label=last?`Your last recorded backup was ${Math.floor((Date.now()-last.getTime())/86400000)} day(s) ago.`:'You have not exported a backup yet.';
+    box.innerHTML=`<strong>Backup reminder:</strong> ${esc(label)} <button class="link-btn" id="warningBackupBtn">Export a backup now</button>`;
+    box.classList.remove('hidden');
+    $('#warningBackupBtn')?.addEventListener('click',exportBackup);
+  }
+
+  function renderDashboard(){
+    const products=activeProducts();
+    $('#statProducts').textContent=products.length;
+    $('#statUnits').textContent=products.reduce((s,p)=>s+int(p.qty),0).toLocaleString();
+    const low=products.filter(p=>p.qty<=p.lowStock);
+    $('#statLow').textContent=low.length;
+    const today=dateInputValue(new Date());
+    const todaySales=state.sales.filter(s=>dateInputValue(s.createdAt)===today);
+    $('#statTodaySales').textContent=money(todaySales.reduce((s,x)=>s+netSaleTotal(x),0));
+    $('#statTodayOrders').textContent=`${todaySales.length} order${todaySales.length===1?'':'s'}`;
+
+    $('#dashboardLowStock').innerHTML=low.length?low.slice(0,8).map(p=>`<div class="list-row"><div class="list-main"><div class="list-title">${esc(p.name)}</div><div class="list-sub">${esc(p.category)} · alert at ${p.lowStock}</div></div><span class="badge ${p.qty===0?'danger':'warn'}">${p.qty===0?'Out':`${p.qty} left`}</span></div>`).join(''):'<div class="empty">No low-stock products.</div>';
+    const recent=state.movements.slice(0,8);
+    $('#dashboardActivity').innerHTML=recent.length?recent.map(m=>`<div class="list-row"><div class="list-main"><div class="list-title">${esc(m.productName)}</div><div class="list-sub">${esc(m.reason)} · ${fmtDate(m.createdAt)}</div></div><strong>${m.delta>0?'+':''}${m.delta}</strong></div>`).join(''):'<div class="empty">No activity yet.</div>';
+  }
+
+  function categories(){ return [...new Set(activeProducts().map(p=>p.category||'Uncategorized'))].sort((a,b)=>a.localeCompare(b)); }
+  function renderProducts(){
+    const categorySelect=$('#categoryFilter');
+    const oldCategory=categorySelect.value;
+    categorySelect.innerHTML='<option value="all">All categories</option>'+categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    if([...categorySelect.options].some(o=>o.value===oldCategory)) categorySelect.value=oldCategory;
+    const q=$('#productSearch').value.trim().toLowerCase(), filter=$('#productFilter').value, cat=categorySelect.value;
+    const source=filter==='archived' ? state.products.filter(p=>p.active===false) : activeProducts();
+    const list=source.filter(p=>{
+      const hay=[p.name,p.sku,p.barcode,p.category].join(' ').toLowerCase();
+      const filterOk=filter==='all'||filter==='archived'||(filter==='low'&&p.qty>0&&p.qty<=p.lowStock)||(filter==='out'&&p.qty===0)||(filter==='available'&&p.qty>0);
+      return (!q||hay.includes(q))&&filterOk&&(cat==='all'||p.category===cat);
+    });
+    $('#productsEmpty').classList.toggle('hidden',list.length>0);
+    $('#productsTableBody').innerHTML=list.map(p=>`<tr>
+      <td class="wrap"><strong>${esc(p.name)}</strong>${p.notes?`<div class="tiny muted">${esc(p.notes)}</div>`:''}</td>
+      <td>${esc(p.category)}</td><td>${esc(p.sku||p.barcode||'—')}</td><td>${money(p.cost)}</td><td>${money(p.price)}</td>
+      <td><span class="badge ${p.qty===0?'danger':p.qty<=p.lowStock?'warn':'success'}">${p.qty}</span></td>
+      <td><div class="table-actions"><button class="mini-btn" data-edit-product="${p.id}">Edit</button>${p.active===false?`<button class="mini-btn" data-unarchive-product="${p.id}">Unarchive</button>`:`<button class="mini-btn" data-archive-product="${p.id}">Archive</button>`}</div></td>
+    </tr>`).join('');
+  }
+
+  function openProductDialog(product=null){
+    $('#productForm').reset(); $('#productId').value=product?.id||''; $('#productDialogTitle').textContent=product?'Edit product':'Add product';
+    $('#productName').value=product?.name||''; $('#productCategory').value=product?.category||''; $('#productSku').value=product?.sku||product?.barcode||''; $('#productBarcode').value='';
+    $('#productCost').value=product?.cost??0; $('#productPrice').value=product?.price??0; $('#productLow').value=product?.lowStock??5; $('#productNotes').value=product?.notes||'';
+    $('#productOpeningStock').value=product?.qty??0; $('#productOpeningStock').disabled=!!product;
+    $('#productOpeningStock').parentElement.firstChild.textContent=product?'Current stock (change from Stock page)':'Opening stock';
+    $('#productDialog').showModal(); setTimeout(()=>$('#productName').focus(),0);
+  }
+
+  async function saveProduct(event){
+    event.preventDefault();
+    const id=$('#productId').value;
+    const input={name:$('#productName').value,category:$('#productCategory').value,sku:$('#productSku').value,barcode:$('#productBarcode').value,cost:$('#productCost').value,price:$('#productPrice').value,openingStock:$('#productOpeningStock').value,lowStock:$('#productLow').value,notes:$('#productNotes').value};
+    try{ if(id) await DB.updateProduct(id,input); else await DB.addProduct(input); $('#productDialog').close(); await refresh(); notify(id?'Product updated.':'Product added.'); }
+    catch(err){ notify(err.message,'error'); }
+  }
+
+  function renderStock(){
+    const select=$('#stockProduct'), current=select.value;
+    select.innerHTML='<option value="">Select product</option>'+activeProducts().map(p=>`<option value="${p.id}">${esc(p.name)} — ${p.qty} in stock</option>`).join('');
+    if(activeProducts().some(p=>p.id===current)) select.value=current;
+    $('#stockHistoryBody').innerHTML=state.movements.slice(0,100).map(m=>`<tr><td>${fmtDate(m.createdAt)}</td><td>${esc(m.productName)}</td><td><strong>${m.delta>0?'+':''}${m.delta}</strong></td><td class="wrap">${esc(m.reason)}</td></tr>`).join('')||'<tr><td colspan="4" class="muted">No stock history yet.</td></tr>';
+  }
+
+  async function saveStock(event){
+    event.preventDefault();
+    try{ await DB.stockMovement($('#stockProduct').value,$('#stockType').value,$('#stockQty').value,$('#stockReason').value); $('#stockReason').value=''; $('#stockQty').value=$('#stockType').value==='ADJUST'?'0':'1'; await refresh(); notify('Stock updated.'); }
+    catch(err){notify(err.message,'error');}
+  }
+
+  function renderPos(){
+    const q=$('#posSearch').value.trim().toLowerCase();
+    const list=activeProducts().filter(p=>!q||[p.name,p.sku,p.barcode,p.category].join(' ').toLowerCase().includes(q)).slice(0,80);
+    $('#posProductList').innerHTML=list.map(p=>`<button class="product-choice" data-add-cart="${p.id}" ${p.qty<1?'disabled':''}><strong>${esc(p.name)}</strong><span>${esc(p.category)} · ${money(p.price)} · ${p.qty} in stock</span></button>`).join('')||'<div class="empty">No matching products.</div>';
+  }
+
+  function addToCart(id){
+    const p=productById(id); if(!p||p.qty<1) return;
+    const current=state.cart.get(id)||0; if(current>=p.qty){notify(`Only ${p.qty} units of ${p.name} are available.`,'error');return;}
+    state.cart.set(id,current+1); renderCart();
+  }
+  function setCartQty(id,qty){
+    const p=productById(id); if(!p)return; const q=int(qty);
+    if(q<=0) state.cart.delete(id); else state.cart.set(id,Math.min(q,p.qty)); renderCart();
+  }
+  function renderCart(){
+    for(const [id,qty] of [...state.cart]){const p=productById(id); if(!p||!p.active||p.qty<1)state.cart.delete(id); else if(qty>p.qty)state.cart.set(id,p.qty);}
+    const rows=[...state.cart.entries()].map(([id,qty])=>({p:productById(id),qty})).filter(x=>x.p);
+    $('#cartCount').textContent=`${rows.reduce((s,r)=>s+r.qty,0)} item${rows.reduce((s,r)=>s+r.qty,0)===1?'':'s'}`;
+    $('#cartItems').innerHTML=rows.length?rows.map(({p,qty})=>`<div class="cart-item"><div><div class="cart-name">${esc(p.name)}</div><div class="cart-sub">${money(p.price)} each · ${money(p.price*qty)}</div></div><div class="qty-control"><button data-cart-minus="${p.id}">−</button><input data-cart-input="${p.id}" type="number" min="0" max="${p.qty}" value="${qty}"><button data-cart-plus="${p.id}">+</button></div></div>`).join(''):'<div class="empty">Cart is empty.</div>';
+    const subtotal=rows.reduce((s,r)=>s+r.p.price*r.qty,0), discount=Math.min(Math.max(0,n($('#saleDiscount').value)),subtotal), total=Math.max(0,subtotal-discount);
+    $('#saleSubtotal').textContent=money(subtotal); $('#saleDiscountText').textContent=money(discount); $('#saleTotal').textContent=money(total); $('#checkoutBtn').disabled=!rows.length;
+  }
+
+  async function checkout(){
+    const items=[...state.cart.entries()].map(([productId,qty])=>({productId,qty}));
+    try{const sale=await DB.createSale({items,customer:$('#saleCustomer').value,payment:$('#salePayment').value,discount:$('#saleDiscount').value}); state.cart.clear(); $('#saleCustomer').value=''; $('#saleDiscount').value='0'; await refresh(); notify(`Sale completed: ${sale.receipt}`); openSale(sale.id);}
+    catch(err){notify(err.message,'error');}
+  }
+
+  function filteredSales(){
+    const q=$('#salesSearch').value.trim().toLowerCase(), from=startOfDay($('#salesFrom').value), to=endOfDay($('#salesTo').value);
+    return state.sales.filter(s=>{const d=new Date(s.createdAt);return(!q||[s.receipt,s.customer,s.payment].join(' ').toLowerCase().includes(q))&&(!from||d>=from)&&(!to||d<=to);});
+  }
+  function renderSales(){
+    const list=filteredSales(); $('#salesEmpty').classList.toggle('hidden',list.length>0);
+    $('#salesTableBody').innerHTML=list.map(s=>`<tr><td><strong>${esc(s.receipt)}</strong></td><td>${fmtDate(s.createdAt)}</td><td>${esc(s.customer||'')}</td><td>${esc(s.payment)}</td><td>${s.items.reduce((a,i)=>a+i.qty,0)}</td><td>${money(netSaleTotal(s))}</td><td><span class="badge ${s.status==='COMPLETED'?'success':'warn'}">${esc(s.status.replace('_',' '))}</span></td><td><button class="mini-btn" data-view-sale="${s.id}">View</button></td></tr>`).join('');
+  }
+
+  function receiptHtml(sale){
+    const settings=state.settings;
+    return `<div class="receipt"><div class="receipt-head"><h3>${esc(settings.businessName)}</h3>${settings.address?`<div class="small">${esc(settings.address)}</div>`:''}${settings.phone?`<div class="small">${esc(settings.phone)}</div>`:''}</div>
+    <div class="receipt-meta"><div><strong>Receipt:</strong> ${esc(sale.receipt)}</div><div><strong>Date:</strong> ${fmtDate(sale.createdAt)}</div><div><strong>Customer:</strong> ${esc(sale.customer||'')}</div><div><strong>Payment:</strong> ${esc(sale.payment)}</div></div>
+    <table class="receipt-table"><thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>${sale.items.map(i=>`<tr><td>${esc(i.name)}${i.returnedQty?`<div class="tiny muted">Returned: ${i.returnedQty}</div>`:''}</td><td>${i.qty}</td><td>${money(i.price)}</td><td>${money(i.price*i.qty)}</td></tr>`).join('')}</tbody></table>
+    <div class="receipt-total"><div><span>Subtotal</span><span>${money(sale.subtotal)}</span></div><div><span>Discount</span><span>−${money(sale.discount)}</span></div>${sale.returnedAmount?`<div><span>Returned/refunded</span><span>−${money(sale.returnedAmount)}</span></div>`:''}<div class="grand"><span>Net total</span><span>${money(netSaleTotal(sale))}</span></div></div><div class="receipt-footer">Powered by SimpleStock</div></div>`;
+  }
+  function openSale(id){
+    const sale=state.sales.find(s=>s.id===id); if(!sale)return; state.selectedSale=sale;
+    $('#saleDetailContent').innerHTML=receiptHtml(sale);
+    const canReturn=sale.items.some(i=>(i.returnedQty||0)<i.qty); $('#returnItemsBtn').disabled=!canReturn; $('#saleDialog').showModal();
+  }
+  function openReturn(){
+    const sale=state.selectedSale; if(!sale)return;
+    $('#returnItemsList').innerHTML=sale.items.map(i=>{const remaining=i.qty-(i.returnedQty||0);return `<div class="return-row"><div><strong>${esc(i.name)}</strong><div class="tiny muted">Sold ${i.qty} · already returned ${i.returnedQty||0}</div></div><input class="input" data-return-product="${i.productId}" type="number" min="0" max="${remaining}" value="0" ${remaining===0?'disabled':''}></div>`;}).join('');
+    $('#returnReason').value=''; $('#saleDialog').close(); $('#returnDialog').showModal();
+  }
+  async function processReturn(event){
+    event.preventDefault(); const map={}; $$('[data-return-product]',$('#returnItemsList')).forEach(i=>map[i.dataset.returnProduct]=i.value);
+    try{const updated=await DB.returnSaleItems(state.selectedSale.id,map,$('#returnReason').value); $('#returnDialog').close(); await refresh(); notify('Return processed and stock restored.'); openSale(updated.id);}catch(err){notify(err.message,'error');}
+  }
+
+  function salesInRange(fromValue,toValue){const from=startOfDay(fromValue),to=endOfDay(toValue);return state.sales.filter(s=>{const d=new Date(s.createdAt);return(!from||d>=from)&&(!to||d<=to);});}
+  function renderReports(){
+    if(!$('#reportFrom').value){const d=new Date();d.setDate(1);$('#reportFrom').value=dateInputValue(d);} if(!$('#reportTo').value)$('#reportTo').value=dateInputValue(new Date());
+    const sales=salesInRange($('#reportFrom').value,$('#reportTo').value);
+    const revenue=sales.reduce((s,x)=>s+netSaleTotal(x),0); let cogs=0; const quantities=new Map(), payments=new Map();
+    for(const sale of sales){
+      const grossRemaining=sale.items.reduce((sum,i)=>sum+i.price*(i.qty-(i.returnedQty||0)),0);
+      const originalGross=sale.subtotal||1; const discountRate=n(sale.discount)/originalGross;
+      for(const item of sale.items){const q=item.qty-(item.returnedQty||0); cogs+=item.cost*q; if(q>0)quantities.set(item.name,(quantities.get(item.name)||0)+q);}
+      const paymentNet=Math.max(0,grossRemaining*(1-discountRate)); payments.set(sale.payment,(payments.get(sale.payment)||0)+paymentNet);
+    }
+    const inventory=activeProducts().reduce((s,p)=>s+n(p.cost)*int(p.qty),0);
+    $('#reportRevenue').textContent=money(revenue); $('#reportOrders').textContent=sales.length; $('#reportProfit').textContent=money(revenue-cogs); $('#reportInventoryValue').textContent=money(inventory);
+    const top=[...quantities.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10); $('#topProducts').innerHTML=top.length?top.map(([name,qty],i)=>`<div class="list-row"><div class="list-title">${i+1}. ${esc(name)}</div><strong>${qty} sold</strong></div>`).join(''):'<div class="empty">No sales in this period.</div>';
+    const pay=[...payments.entries()].sort((a,b)=>b[1]-a[1]); $('#paymentBreakdown').innerHTML=pay.length?pay.map(([name,total])=>`<div class="list-row"><div class="list-title">${esc(name)}</div><strong>${money(total)}</strong></div>`).join(''):'<div class="empty">No payments in this period.</div>';
+  }
+
+  function renderSettings(){
+    const s=state.settings;if(!s)return; $('#settingBusinessName').value=s.businessName||'';$('#settingAddress').value=s.address||'';$('#settingPhone').value=s.phone||'';$('#settingCurrency').value=s.currency||'৳';$('#settingBackupDays').value=String(s.backupDays||7);
+  }
+  async function saveSettings(event){event.preventDefault();try{state.settings=await DB.saveSettings({businessName:$('#settingBusinessName').value,address:$('#settingAddress').value,phone:$('#settingPhone').value,currency:$('#settingCurrency').value,backupDays:$('#settingBackupDays').value});await refresh();notify('Settings saved.');}catch(err){notify(err.message,'error');}}
+
+  function download(filename,content,type='application/octet-stream'){
+    const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }
+  async function exportBackup(){
+    try{const data=await DB.exportAll(); const stamp=dateInputValue(new Date()); download(`simplestock-backup-${stamp}.json`,JSON.stringify(data,null,2),'application/json'); state.settings=await DB.saveSettings({lastBackupAt:new Date().toISOString()}); renderBackupWarning(); notify('Full backup exported. Keep the file somewhere safe.');}catch(err){notify(err.message,'error');}
+  }
+  function csvCell(value){let s=String(value??'');if(/^[=+\-@]/.test(s))s="'"+s;return `"${s.replace(/"/g,'""')}"`;}
+  function toCsv(rows){return '\uFEFF'+rows.map(row=>row.map(csvCell).join(',')).join('\r\n');}
+  function exportProductsCsv(){const rows=[['Product','Category','SKU / Barcode','Cost','Price','Quantity','Low stock level'],...activeProducts().map(p=>[p.name,p.category,p.sku||p.barcode||'',p.cost,p.price,p.qty,p.lowStock])];download(`simplestock-products-${dateInputValue(new Date())}.csv`,toCsv(rows),'text/csv;charset=utf-8');}
+  function exportSalesCsv(){const rows=[['Receipt','Date','Customer','Payment','Status','Subtotal','Discount','Returned','Net total','Items'],...state.sales.map(s=>[s.receipt,s.createdAt,s.customer,s.payment,s.status,s.subtotal,s.discount,s.returnedAmount||0,netSaleTotal(s),s.items.map(i=>`${i.name} x${i.qty}`).join('; ')])];download(`simplestock-sales-${dateInputValue(new Date())}.csv`,toCsv(rows),'text/csv;charset=utf-8');}
+  function exportMovementsCsv(){const rows=[['Date','Product','Type','Change','Before','After','Reason'],...state.movements.map(m=>[m.createdAt,m.productName,m.type,m.delta,m.beforeQty,m.afterQty,m.reason])];download(`simplestock-stock-history-${dateInputValue(new Date())}.csv`,toCsv(rows),'text/csv;charset=utf-8');}
+
+  async function restoreBackup(file){
+    try{const text=await file.text();const data=JSON.parse(text);await DB.restoreAll(data);state.cart.clear();await refresh();notify('Backup restored successfully.');go('dashboard');}
+    catch(err){notify(`Restore failed: ${err.message}`,'error');}
+  }
+
+  function confirmAction(title,text,onConfirm){
+    $('#confirmTitle').textContent=title;$('#confirmText').textContent=text;const dialog=$('#confirmDialog');dialog.showModal();
+    const handler=async()=>{dialog.removeEventListener('close',handler);if(dialog.returnValue==='confirm')await onConfirm();};dialog.addEventListener('close',handler);
+  }
+
+  function wireEvents(){
+    $$('.nav-btn').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view))); $('#menuBtn').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+    $$('[data-go]').forEach(b=>b.addEventListener('click',()=>{go(b.dataset.go);if(b.dataset.filter)$('#productFilter').value=b.dataset.filter;renderProducts();}));
+    $('#quickBackupBtn').addEventListener('click',exportBackup); $('#exportBackupBtn').addEventListener('click',exportBackup);
+    $('#addProductBtn').addEventListener('click',()=>openProductDialog()); $('#closeProductDialog').addEventListener('click',()=>$('#productDialog').close()); $('#productForm').addEventListener('submit',saveProduct);
+    ['productSearch','productFilter','categoryFilter'].forEach(id=>$('#'+id).addEventListener(id==='productSearch'?'input':'change',renderProducts));
+    $('#productsTableBody').addEventListener('click',e=>{const edit=e.target.closest('[data-edit-product]');if(edit)openProductDialog(productById(edit.dataset.editProduct));const arch=e.target.closest('[data-archive-product]');if(arch){const p=productById(arch.dataset.archiveProduct);confirmAction('Archive product?',`${p.name} will disappear from active inventory, but old sales history will remain.`,async()=>{await DB.archiveProduct(p.id);await refresh();notify('Product archived.');});}const unarch=e.target.closest('[data-unarchive-product]');if(unarch){const p=productById(unarch.dataset.unarchiveProduct);confirmAction('Unarchive product?',`${p.name} will be restored to active inventory.`,async()=>{await DB.unarchiveProduct(p.id);await refresh();notify('Product unarchived.');});}});
+    $('#stockForm').addEventListener('submit',saveStock); $('#stockType').addEventListener('change',()=>{$('#stockQty').value=$('#stockType').value==='ADJUST'?'0':'1';});
+    $('#posSearch').addEventListener('input',renderPos); $('#posProductList').addEventListener('click',e=>{const b=e.target.closest('[data-add-cart]');if(b)addToCart(b.dataset.addCart);});
+    $('#cartItems').addEventListener('click',e=>{const minus=e.target.closest('[data-cart-minus]'),plus=e.target.closest('[data-cart-plus]');if(minus)setCartQty(minus.dataset.cartMinus,(state.cart.get(minus.dataset.cartMinus)||0)-1);if(plus)setCartQty(plus.dataset.cartPlus,(state.cart.get(plus.dataset.cartPlus)||0)+1);});
+    $('#cartItems').addEventListener('change',e=>{const input=e.target.closest('[data-cart-input]');if(input)setCartQty(input.dataset.cartInput,input.value);});
+    $('#saleDiscount').addEventListener('input',renderCart); $('#clearCartBtn').addEventListener('click',()=>{state.cart.clear();renderCart();}); $('#checkoutBtn').addEventListener('click',checkout);
+    ['salesSearch','salesFrom','salesTo'].forEach(id=>$('#'+id).addEventListener(id==='salesSearch'?'input':'change',()=>{updateDatePlaceholders();renderSales();})); $('#clearSalesFilters').addEventListener('click',()=>{$('#salesSearch').value='';$('#salesFrom').value='';$('#salesTo').value='';updateDatePlaceholders();renderSales();});
+    $('#salesTableBody').addEventListener('click',e=>{const b=e.target.closest('[data-view-sale]');if(b)openSale(b.dataset.viewSale);}); $('#closeSaleDialog').addEventListener('click',()=>$('#saleDialog').close());$('#doneSaleDialog').addEventListener('click',()=>$('#saleDialog').close());$('#printReceiptBtn').addEventListener('click',()=>{const oldTitle=document.title;document.title='';try{window.print();}finally{document.title=oldTitle;}});$('#returnItemsBtn').addEventListener('click',openReturn);$('#closeReturnDialog').addEventListener('click',()=>$('#returnDialog').close());$('#cancelReturnDialog').addEventListener('click',()=>$('#returnDialog').close());$('#returnForm').addEventListener('submit',processReturn);
+    ['reportFrom','reportTo'].forEach(id=>$('#'+id).addEventListener('change',updateDatePlaceholders)); $('#reportApply').addEventListener('click',renderReports); $('#settingsForm').addEventListener('submit',saveSettings);
+    $('#importBackupInput').addEventListener('change',e=>{const f=e.target.files?.[0];if(f)confirmAction('Restore this backup?','Current SimpleStock data on this browser will be replaced by the selected backup.',async()=>{await restoreBackup(f);e.target.value='';});});
+    $('#exportProductsCsv').addEventListener('click',exportProductsCsv);$('#exportSalesCsv').addEventListener('click',exportSalesCsv);$('#exportMovementsCsv').addEventListener('click',exportMovementsCsv);
+    $('#resetDataBtn').addEventListener('click',()=>confirmAction('Delete all local data?','This cannot be undone unless you have an exported backup file.',async()=>{await DB.resetAll();state.cart.clear();await refresh();notify('All local data was deleted.');go('dashboard');}));
+  }
+
+  function onlineStatus(){const badge=$('#offlineBadge');if(navigator.onLine){badge.textContent='Local app ready';badge.className='badge success';}else{badge.textContent='Working offline';badge.className='badge warn';}}
+
+  async function init(){
+    if(!('indexedDB' in globalThis)){alert('This browser does not support IndexedDB. Please use a current version of Chrome, Edge, Firefox or Safari.');return;}
+    wireEvents(); enableDatePickers(); onlineStatus(); window.addEventListener('online',onlineStatus);window.addEventListener('offline',onlineStatus);
+    try{await DB.open();await refresh();updateDatePlaceholders();}
+    catch(err){notify(`Could not open local database: ${err.message}`,'error');}
+  }
+  init();
+})();
+
+  </script>
+</body>
+</html>
